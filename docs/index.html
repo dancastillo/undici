@@ -32,7 +32,22 @@
       noCompileLinks: [
         'benchmarks/.*'
       ],
-      relativePath: true
+      relativePath: true,
+      markdown: {
+        renderer: {
+          // Mimic markedjs/marked behavior - https://github.com/markedjs/marked/blob/master/src/Renderer.ts#L178-L191
+          link(href, title, text) {
+            // Check for /docs/ in the href and remove it if present
+            text = text.includes('/docs/') ? text.replace('/docs/', '/') : text;
+            let out = '<a href="' + href + '"';
+            if (title) {
+              out += ' title="' + title + '"';
+            }
+            out += '>' + text + '</a>';
+            return out;
+          },
+        },
+      },
     }
   </script>
   <!-- Docsify v4 -->
